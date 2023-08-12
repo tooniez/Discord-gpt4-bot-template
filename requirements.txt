@@ -1,0 +1,4 @@
+py-cord>=2.4.1
+asyncpg>=0.28.0
+asyncio>=3.4.3
+openai>=0.4.4
