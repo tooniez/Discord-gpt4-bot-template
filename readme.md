@@ -16,12 +16,13 @@ This is a stater Discord bot that keeps user context in a Postgres database and 
 ## ✨ Features
 
 - Python
-- Quart
 - OpenAI
+- py-cord
 
 ## 💁‍♀️ How to use
 
 - Install Python requirements `pip install -r requirements.txt`
+- Set your `DISCORD_TOKEN` and `OPENAI_API_KEY` variables
 
 
 
