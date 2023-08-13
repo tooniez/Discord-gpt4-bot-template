@@ -25,6 +25,8 @@ This is a stater Discord bot that keeps user context in a Postgres database and 
 - Install Python requirements `pip install -r requirements.txt`
 - Set your [DISCORD_TOKEN](https://discord.com/developers/applications) and [OPENAI_API_KEY](https://platform.openai.com/account/api-keys) variables
 
+- $chat hey
+
 
 
 
