@@ -37,8 +37,9 @@ async def on_ready():
 async def on_guild_join(guild:discord.Guild):
     banned = []
     if guild.id in banned: 
+	print(f"[X][X] Blocked {guild.name}")
         await guild.leave()
-	print(f"[X][X] Blocked {guild.name}")    
+	    
         return
     
     else:
