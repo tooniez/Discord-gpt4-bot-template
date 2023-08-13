@@ -1,11 +1,9 @@
-import os, json, logging
+import os, json, logging, asyncpg, asyncio
 
 import discord
 from discord.ext import commands
-import asyncpg, asyncio
 import openai
 
-import traceback
 
 openai.api_key =        os.getenv('OPENAI_API_KEY')
 TOKEN =                 os.getenv('DISCORD_TOKEN')
@@ -16,14 +14,10 @@ PG_PORT =               os.getenv('PGPORT')
 PG_DB =                 os.getenv('PGPDATABASE')
 
 
-
-
 intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix='$', intents=intents)
-
-
 
 
 
@@ -39,22 +33,15 @@ async def on_ready():
 
 
 
-# @bot.event
-# async def on_message(message = discord.Message):        
-#     await bot.process_commands(message)
-
-
-
 @bot.event
 async def on_guild_join(guild:discord.Guild):
     banned = []
-    if guild.id in banned:
-        print(f"[X][X] Blocked {guild.name}") 
+    if guild.id in banned: 
         await guild.leave()
+	print(f"[X][X] Blocked {guild.name}")    
         return
     
     else:
-
         async with bot.pool.acquire() as con:   
             await con.execute(f'''CREATE TABLE IF NOT EXISTS context (
                             
@@ -63,6 +50,7 @@ async def on_guild_join(guild:discord.Guild):
                     )''')
             
             await con.execute(f'INSERT INTO context(id) VALUES({guild.id}) ON CONFLICT DO NOTHING')
+		
         print(f"added to {guild}")
         
 
@@ -103,7 +91,7 @@ async def chat(ctx : discord.Message, *, text):
             if len(chatcontext) > 6:
                     if len(chatcontext) >= 500: 
                         await chatcontext_pop(ctx.guild.id, 500)         
-                    # we keep 500 in db but only use 6    
+                    									# we keep 500 in db but only use 6    
                     chatcontext = chatcontext[len(chatcontext)-6:len(chatcontext)]
             for mesg in chatcontext:   
                 
@@ -159,15 +147,13 @@ async def chat(ctx : discord.Message, *, text):
     except Exception as e:
         await ctx.reply("Error")
         print(f"!chat THREW: {e}")
-        traceback.print_exc()
+        
 
 
 @chat.error
 async def chat_error(ctx, error):
 	if isinstance(error, commands.CommandOnCooldown):	
             await ctx.reply(f"Chatting too fast! {round(error.retry_after, 2)} seconds left")
-
-
 
 
 
@@ -178,7 +164,7 @@ async def get_guild_x(guild, x):
 
     except Exception as e:
         print(f'get_guild_x: {e}')
-        traceback.print_exc()
+        
 
 
 
@@ -191,9 +177,7 @@ async def set_guild_x(guild, x, val):
 
         except Exception as e:
             print(f'set_guild_x threw {e}')
-            traceback.print_exc()
-
-
+            
 
 
 
