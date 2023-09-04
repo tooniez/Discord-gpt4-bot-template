@@ -97,7 +97,7 @@ async def chat(ctx : discord.Message, *, text):
                 
                 
                 mesg = mesg.replace( '\\"','"').replace( "\'","'")
-                mesg = mesg.split(":")
+                mesg = mesg.split(":",1)
 
                 if mesg[0].lower == 'bot' or mesg[0].lower == 'assistant': 
                     mesg[0] = "assistant"
